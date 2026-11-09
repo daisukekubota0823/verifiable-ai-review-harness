@@ -1,0 +1,33 @@
+{
+  "pilot": "Mozilla Human-Scale AI Incubator - local-model evaluation layer pilot",
+  "registered_before_run": "2026-11-08",
+  "data": {
+    "file": "~/workspace/aist-p0f18c15/example2/deseq2_r_results.csv",
+    "description": "R DESeq2 1.42.0 results on Schnell et al. 2025 human PSC kidney organoid data (GEO GSE264217), LY294002 10uM 48h vs control, 6 samples. Columns: baseMean, log2FoldChange, padj per Ensembl gene."
+  },
+  "ground_truth_rule": "padj < 0.05 AND log2FC >= 1 -> UP; padj < 0.05 AND log2FC <= -1 -> DOWN; otherwise NO_CHANGE. Genes with padj NA are excluded.",
+  "sampling": {
+    "seed": 20261108,
+    "positives": "all UP and DOWN genes, capped at 150 by random sample if more",
+    "borderline_band": "truth NO_CHANGE AND ((padj < 0.05 AND 0.7 <= |log2FC| < 1.0) OR (0.05 <= padj < 0.2 AND |log2FC| >= 1.0)); sample up to 60",
+    "clear_negatives": "remaining NO_CHANGE genes; sample 90",
+    "presentation_order": "all sampled cases shuffled with the same seed; model sees one gene at a time"
+  },
+  "model_presentation": "Ensembl ID, baseMean, log2FoldChange, padj (as printed, 4 significant digits). No gene symbol, no condition information beyond the criteria text. The criteria in the prompt are exactly the ground-truth rule, stated in words.",
+  "model": {
+    "name": "Qwen2.5-3B-Instruct (GGUF Q4_K_M)",
+    "runtime": "llama.cpp llama-server, local CPU only, no network calls at inference",
+    "temperature": 0,
+    "max_output_tokens": 8,
+    "note": "A 3B model is used to exercise the protocol end-to-end in this environment. The proposed deployment envelope is open-weight models up to 36B on a single workstation."
+  },
+  "metrics": [
+    "overall agreement (3-class)",
+    "Cohen's kappa (3-class)",
+    "miss rate: positives (UP/DOWN truth) not returned with the correct direction, over all positives; direction errors counted and reported separately",
+    "false-detection rate: NO_CHANGE truth returned as UP or DOWN, over all NO_CHANGE",
+    "agreement within the borderline band and within clear negatives, separately"
+  ],
+  "routing_rule_registered_in_advance": "In the proposed production design, cases in the borderline band are routed to human review by design. Therefore two evaluations are reported: (1) all sampled cases; (2) the auto-judged subset (positives + clear negatives) with coverage = auto-judged / all cases.",
+  "decision_lines_from_proposal": {"agreement_min": 0.85, "kappa_min": 0.75, "miss_rate_max": 0.05, "false_detection_max": 0.10}
+}

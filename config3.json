@@ -1,0 +1,10 @@
+{
+  "pilot3": "Review generation over a full experiment record, then a deterministic claim audit (the generate-verify loop of the proposed layer)",
+  "registered_before_run": "2026-11-08",
+  "record": "Schnell et al. 2025 kidney organoids (GSE264217): DESeq2 summary counts, top genes by |log2FC| among DEGs (Ensembl IDs only, no symbol mapping), top Hallmark/Reactome pathways from fgsea_results.csv. All values computed from the source tables by build_record.py.",
+  "taskA_free_draft": "The model writes a structured review (<=200 words) from the record alone.",
+  "taskB_slot_filled": "The platform fills every number and direction from the record into a fixed skeleton; the model writes only a 2-3 sentence interpretation and is instructed to introduce no new numbers or entities.",
+  "audit": "Deterministic, in code: every number in the text must match a record value within rounding; every named pathway/gene direction must match the table sign; any 'significant' claim must satisfy the pre-registered rules; in task B, any number or entity not present in the record counts as an introduced claim.",
+  "metrics": ["checkable claims", "claim accuracy (exact)", "error list with types", "task B introduced-claim count"],
+  "model": "Qwen2.5-3B-Instruct GGUF Q4_K_M, llama.cpp, local CPU, temperature 0"
+}

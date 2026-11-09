@@ -1,0 +1,33 @@
+{
+ "pilot2": "Claim verification against the experiment record (the review-assist function of the proposed layer)",
+ "registered_before_run": "2026-11-08",
+ "task": "The model is shown an evidence excerpt from an analysis record (pathway rows or gene rows) and one draft review statement. It must answer SUPPORTED if the statement follows from the evidence under the stated rules, CONTRADICTED otherwise.",
+ "rules_stated_to_model": "A pathway/gene is significant if padj (FDR) < 0.05. Direction: NES or log2FoldChange > 0 means up, < 0 means down. A gene is a significant DEG only if padj < 0.05 AND |log2FoldChange| >= 1. A statement is CONTRADICTED if any number, direction, or significance claim in it does not match the evidence row.",
+ "data": {
+  "pathways": "~/workspace/aist-p0f18c15/example2/fgsea_results.csv (fgsea on the DESeq2 ranking, Hallmark + Reactome, 1054 rows)",
+  "genes": "~/workspace/aist-p0f18c15/example2/deseq2_r_results.csv (R DESeq2 1.42.0)"
+ },
+ "construction": {
+  "seed": 20261108,
+  "pathway_items": 42,
+  "gene_items": 42,
+  "balance": "half SUPPORTED (statement matches evidence), half CONTRADICTED (one controlled fault: flipped direction, significance asserted against the values, or numbers taken from a different row)",
+  "evidence_excerpt": "the target row plus 2 distractor rows from the same table",
+  "borderline_band": "items whose deciding value is near a threshold (pathway padj in [0.03, 0.08]; gene |log2FC| in [0.85, 1.15] or padj in [0.03, 0.08]); routed to human review by design, reported separately"
+ },
+ "model": "Qwen2.5-3B-Instruct GGUF Q4_K_M, llama.cpp, local CPU, temperature 0, output one word",
+ "metrics": [
+  "agreement",
+  "Cohen's kappa (binary)",
+  "dangerous miss rate: CONTRADICTED judged SUPPORTED, over all CONTRADICTED",
+  "false-flag rate: SUPPORTED judged CONTRADICTED, over all SUPPORTED",
+  "auto-judged subset under the routing rule, with coverage"
+ ],
+ "decision_lines": {
+  "agreement_min": 0.85,
+  "kappa_min": 0.75,
+  "dangerous_miss_max": 0.05,
+  "false_flag_max": 0.1
+ },
+ "version": "v2 (statement semantics fixed after v1 audit; see gen_claims.py header)"
+}

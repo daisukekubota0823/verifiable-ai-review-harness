@@ -1,0 +1,7 @@
+{
+  "pilot_jp": "Same 300-case classification protocol as pilot 1, with the record and instructions presented in Japanese. Question: does a small local model's judgment quality on scientific records change when the record language is Japanese rather than English?",
+  "registered_before_run": "2026-11-09",
+  "data": "identical cases.csv (same 300 cases, same seed, same ground-truth rule, same borderline band)",
+  "model": "Qwen2.5-3B-Instruct GGUF Q4_K_M, llama.cpp, local CPU, temperature 0",
+  "metrics": "same as pilot 1, compared side by side: overall agreement/kappa/miss/false-detection; auto-judged subset under the same routing rule; coverage"
+}
