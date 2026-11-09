@@ -1,0 +1,13 @@
+{
+ "seed": 20261121,
+ "n": 300,
+ "criteria": {
+  "require_converged": true,
+  "min_bootstrap_success_rate": 0.8,
+  "max_ci_log10_width": 0.5,
+  "outlier_studentized_threshold": 3.0,
+  "max_outlier_fraction": 0.2,
+  "min_pseudo_r2": 0.8
+ },
+ "note": "truth from assess_fit (pre-registered criteria of dose_response.py); curves synthetic, true IC50 in {0.3, 1.0, 3.0} uM"
+}

@@ -1,0 +1,7 @@
+# Benchmark domain 2 — dose-response fit quality control (specification)
+- Cases: 300 judgments. Each case shows a four-parameter logistic fit's summary (replicates, fitted IC50 with 95% CI, Hill coefficient, convergence, bootstrap success rate, CI width in log10, outlier fraction, pseudo-R2) and asks one judgment: does the fit pass the registered quality criteria?
+- Criteria (all must hold; fixed in the reference module before construction): converged; bootstrap success rate >= 0.80; CI width (log10) <= 0.5; outlier fraction <= 0.20; pseudo-R2 >= 0.80.
+- Ground truth: computed mechanically by the same criteria function on the same metrics shown to the judge (assess_fit in dose_response.py, the module validated on 600 known-truth curves).
+- Data: synthetic curves with known true IC50 (0.3 / 1.0 / 3.0 uM), 8 doses, replicates 3 or 6, proportional noise CV 10/20/30%; quota-sampled with directed scenarios so that clear PASS (150), clear FAIL (90) and borderline (60) are all represented. Borderline: any continuous metric within its margin of the threshold (CI width +-0.05; pseudo-R2 +-0.02; outlier fraction +-0.03; bootstrap success +-0.05); borderline cases are routed to human review by design and scored separately.
+- Languages: each case exists in English and Japanese versions with identical values and ground truth.
+- Construction: build_dose.py (seed 20261121). Scoring: agreement, Cohen's kappa, miss (FAIL judged PASS), false-fail (PASS judged FAIL), per language, overall and on the auto-judged subset.
