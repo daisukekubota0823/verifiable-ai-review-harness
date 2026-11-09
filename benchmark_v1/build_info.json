@@ -1,0 +1,6 @@
+{
+ "seed": 20261120,
+ "classification_n": 600,
+ "verification_n": 120,
+ "source": "GEO GSE264217, DESeq2 1.42.0 / fgsea"
+}
